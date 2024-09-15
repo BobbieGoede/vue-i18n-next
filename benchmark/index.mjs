@@ -1,9 +1,13 @@
 import { spawn } from 'child_process'
 
-function run(pattner) {
+function run(pattner, mode) {
   return new Promise((resolve, reject) => {
     const child = spawn('node', [`./benchmark/${pattner}.mjs`], {
-      stdio: 'inherit'
+      stdio: 'inherit',
+      env: {
+        ...process.env,
+        __LEGACY_DEEP_COPY__: String(mode)
+      }
     })
 
     child.once('error', err => {
@@ -23,15 +27,19 @@ function run(pattner) {
 ;(async () => {
   try {
     for (const p of [
-      'compile',
-      'simple',
-      'simple-jit',
-      'simple-jit-aot',
-      'complex',
-      'complex-jit',
-      'complex-jit-aot'
+      // 'compile',
+      // 'simple',
+      // 'simple-jit',
+      // 'simple-jit-aot',
+      // 'complex',
+      'complex-nested',
+      'complex-nested-jit'
+      // 'complex-jit',
+      // 'complex-jit-aot'
     ]) {
-      await run(p)
+      await run(p, 0)
+      console.log()
+      await run(p, 1)
       console.log()
     }
   } catch (e) {
