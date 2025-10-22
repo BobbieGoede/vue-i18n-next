@@ -57,5 +57,8 @@
     "access": "public"
   },
   "sideEffects": false,
-  "type": "module"
+  "type": "module",
+  "dependencies": {
+    "@vue/shared": "^3.5.22"
+  }
 }
